@@ -162,7 +162,7 @@ public class StudentBean implements Serializable {
 	}
 
 	public void onRowUnselect(UnselectEvent event) {
-		FacesMessage msg = new FacesMessage("Car Unselected", ((Student) event.getObject()).getStudentName());
+		FacesMessage msg = new FacesMessage("Student Unselected", ((Student) event.getObject()).getStudentName());
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 

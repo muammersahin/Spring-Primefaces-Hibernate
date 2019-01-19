@@ -227,7 +227,8 @@ body {
 							<f:facet name="footer">
 								<p:commandButton value="Kaydet" action="#{studentBean.save}"
 									update=":form:grid,:dene:veri,:form:grwl"
-									oncomplete="handleLoginRequest(xhr, status, args)">
+									oncomplete="PF('kayit').show()" onerror="PF('kayit').show()">
+									     <p:resetInput target=":form:kayit" />
 								</p:commandButton>
 								<p:commandButton value="Çıkış" onclick="kayit.hide()"
 									immediate="true" />
