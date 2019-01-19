@@ -3,9 +3,12 @@ package Model;
 import java.io.Serializable;
 import java.sql.Blob;
 
+import javax.persistence.Entity;
+
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
+@Entity
 public class Student implements Serializable {
 
 	private static final long serialVersionUID = 1L;
