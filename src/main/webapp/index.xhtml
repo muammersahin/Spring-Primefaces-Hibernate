@@ -1,0 +1,366 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+	<style>
+* {
+	font-family: Arial;
+	font-size: 12px;
+}
+
+body {
+	font-family: Arial;
+	font-size: 12px;
+	margin: 0px;
+	padding: 0px;
+	min-width: 700px;
+}
+
+#main {
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+#content {
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+	min-width: 700px;
+	min-height: 600px;
+	float: left;
+}
+
+#left {
+	background: white;
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	min-height: 250px;
+}
+
+#right {
+	width: 85%;
+	background: white; //
+	position: absolute;
+	display: block;
+	margin: 0px;
+	padding: 0px;
+	float: left;
+	min-height: 250px;
+}
+
+#footer {
+	margin-left: 45%;
+	float: bottom;
+}
+
+.ui-menubar {
+	transition: background 2s;
+}
+
+.ui-menubar:hover {
+	
+}
+
+.ui-menu-list {
+	
+}
+
+.ui-menuitem {
+	
+}
+
+.ui-menuitem:hover {
+	
+}
+
+.ui-menuitem-link {
+	
+}
+
+.ui-menuitem-text {
+	font-size: 15px;
+	text-align: center;
+}
+
+.ui-button {
+	
+}
+
+.ui-button:hover {
+	
+}
+
+.ui-button-text-only {
+	
+}
+
+.ui-button-text {
+	
+}
+
+.menu {
+	height: 90%;
+	min-height: 608px;
+	text-align: center;
+}
+
+#top {
+	transition: 2s;
+	width: 100%;
+	height: 10%;
+	margin: 0px;
+	padding: 0px;
+}
+
+#center {
+	width: 100%;
+	height: 40%;
+	margin: 0px;
+	padding: 0px;
+}
+
+#bottom {
+	width: 100%;
+	height: 50%;
+	margin: 0px;
+	padding: 0px;
+}
+</style>
+	<title>Students</title>
+
+	<script type="text/javascript">
+		function handleLoginRequest(xhr, status, args) {
+			if (args.validationFailed || !args.loggedIn) {
+				PF('yeni').jq.effect("bounce", {
+					times : 5
+				}, 100);
+			}
+		}
+	</script>
+</h:head>
+<h:body>
+	<div id="main">
+		<h:form>
+			<p:cache>
+				<p:menubar style="font-size: 12px;" id="menu">
+					<p:menuitem value="Anasayfa" icon="ui-icon-home" />
+
+
+					<f:facet name="options">
+					</f:facet>
+				</p:menubar>
+			</p:cache>
+			<p:separator />
+		</h:form>
+		<div id="content">
+			<div id="left">
+				<h:form id="form" enctype="multipart/form-data">
+					<p:growl id="grwl" showDetail="false" life="5000" />
+					<p:menu styleClass="menu">
+						<p:menuitem value="Yeni Öğrenci" icon="ui-icon-disk"
+							oncomplete="PF('kayit').show()" />
+
+
+
+					</p:menu>
+					<p:commandButton value="Kaydet" action="#{studentBean.commit}"
+						style="width:175px;height:100px;"
+						update=":form:grid,:dene:veri,:form:grwl"
+						oncomplete="handleLoginRequest(xhr, status, args)" />
+
+
+					<p:dialog id="kayit" widgetVar="kayit" draggable="true"
+						modal="true" showEffect="fade" showHeader="true" hideEffect="fade"
+						resizable="false">
+						<h:panelGrid columns="2" id="grid">
+							<f:facet name="header">Yeni Öğrenci Kaydet</f:facet>
+							<p:watermark value="Öğrenci Numarası" for="bad" />
+							<p:inputText id="bad"
+								value="#{studentBean.student.studentNumber}" disabled="true" />
+							<p:watermark value="Öğrenci Adı" for="ogad" />
+							<p:inputText id="ogad" value="#{studentBean.student.studentName}"
+								required="true"
+								requiredMessage="Öğrenci adı alanı boş bırakılamaz" />
+							<p:watermark value="Öğrenci Soyadı" for="yad" />
+							<p:inputText value="#{studentBean.student.studentSurname}"
+								id="yad" required="true"
+								requiredMessage="Öğrenci soyadı alanı boş bırakılamaz" />
+							<p:watermark value="Öğrenci Telefonu" for="pon" />
+							<p:inputMask id="pon" value="#{studentBean.student.phoneNumber}"
+								mask="(999) 999-9999" required="true"
+								requiredMessage="Öğrenci telefonu alanı boş bırakılamaz" />
+
+							<p:outputLabel for="city" value="Şehir: " />
+							<p:selectOneMenu id="city" value="#{studentBean.city}"
+								required="true" requiredMessage="Lütfen Şehir Seçiniz"
+								style="width:150px">
+								<p:ajax listener="#{studentBean.onCityChange}" update="distinct" />
+								<f:selectItem itemLabel="Şehir" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{studentBean.cities}" />
+							</p:selectOneMenu>
+							<p:outputLabel for="distinct" value="İlçe: " />
+							<p:selectOneMenu id="distinct"
+								value="#{studentBean.student.distinct}" style="width:150px">
+								<f:selectItem itemLabel="İlçe" itemValue=""
+									noSelectionOption="true" />
+								<f:selectItems value="#{studentBean.distincts}" />
+							</p:selectOneMenu>
+
+							<h:outputText value="Fotoğraf(jpg):" />
+
+							<p:fileUpload fileUploadListener="#{studentBean.upload}"
+								mode="advanced" required="true"
+								requiredMessage="Lütfen Fotoğraf Yükleyiniz.">
+								<f:attribute name="student" value="#{student.studentId}" />
+
+							</p:fileUpload>
+
+							<f:facet name="footer">
+								<p:commandButton value="Kaydet" action="#{studentBean.save}"
+									update=":form:grid,:dene:veri,:form:grwl"
+									oncomplete="handleLoginRequest(xhr, status, args)" />
+								<p:commandButton value="Çıkış" onclick="kayit.hide()" immediate="true"/>
+							</f:facet>
+						</h:panelGrid>
+					</p:dialog>
+				</h:form>
+			</div>
+			<div id="right">
+
+				<div id="top"></div>
+				<div id="center">
+					<h:form>
+					</h:form>
+				</div>
+				<div id="bottom">
+					<h:form id="dene">
+						<p:growl id="growl" showDetail="true" sticky="true" />
+						<p:contextMenu for="veri">
+							<p:menuitem value="Sil" icon="ui-icon-close"
+								action="#{studentBean.delete}" update=":dene:veri" />
+						</p:contextMenu>
+						<p:dataTable id="veri" value="#{studentBean.students}"
+							var="student" scrollable="true" scrollHeight="550"
+							selectionMode="single" rowKey="#{student.studentName}"
+							selection="#{studentBean.selectedStudent}" editable="true">
+							<p:ajax event="rowEdit" listener="#{studentBean.onRowEdit}"
+								update=":dene:growl" />
+							<p:ajax event="rowEditCancel"
+								listener="#{studentBean.onRowCancel}" update=":dene:growl" />
+							<p:ajax event="rowSelect" listener="#{studentBean.onRowSelect}"
+								update=":dene:growl" />
+							<p:ajax event="rowUnselect"
+								listener="#{studentBean.onRowUnselect}" update=":dene:growl" />
+							<p:column headerText="Fotoğraf" style="width:100px;">
+								<p:graphicImage value="resources/#{student.studentNumber}.jpg"
+									style="width:90px;height:100px;" />
+							</p:column>
+
+							<p:column headerText="Öğrenci Numarası"
+								filterBy="#{student.studentNumber}" filterMatchMode="contains"
+								sortBy="#{student.studentNumber}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{student.studentNumber}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{student.studentNumber}" disabled="true" />
+									</f:facet>
+								</p:cellEditor>
+
+							</p:column>
+							<p:column headerText="Öğrenci Adı"
+								filterBy="#{student.studentName}" filterMatchMode="contains"
+								sortBy="#{student.studentName}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{student.studentName}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{student.studentName}" />
+									</f:facet>
+								</p:cellEditor>
+
+							</p:column>
+							<p:column headerText="Öğrenci Soyadı"
+								filterBy="#{student.studentSurname}" filterMatchMode="contains"
+								sortBy="#{student.studentSurname}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{student.studentSurname}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputText value="#{student.studentSurname}" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="Öğrenci Telefon"
+								filterBy="#{student.phoneNumber}" filterMatchMode="contains"
+								sortBy="#{student.phoneNumber}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{student.phoneNumber}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:inputMask value="#{student.phoneNumber}"
+											mask="(999) 999-9999" />
+									</f:facet>
+								</p:cellEditor>
+
+							</p:column>
+							<p:column headerText="Şehir" filterBy="#{student.city}"
+								filterMatchMode="contains" sortBy="#{student.city}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{student.city}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{student.city}" disabled="true" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column headerText="İlçe" filterBy="#{student.distinct}"
+								filterMatchMode="contains" sortBy="#{student.distinct}">
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{student.distinct}" />
+									</f:facet>
+									<f:facet name="input">
+										<h:inputText value="#{student.distinct}" disabled="true" />
+									</f:facet>
+								</p:cellEditor>
+							</p:column>
+							<p:column style="width:50px" headerText="Düzenle">
+								<p:rowEditor />
+							</p:column>
+							<p:column style="width:50px" headerText="Sil">
+								<p:commandLink ajax="true"
+									action="#{studentBean.delete(student)}"
+									update=":form:grid,:dene:veri,:form:grwl" process="@this">
+									<span title="Sil" class="ui-icon ui-icon-trash" />
+
+								</p:commandLink>
+
+							</p:column>
+
+
+						</p:dataTable>
+
+					</h:form>
+				</div>
+
+			</div>
+		</div>
+		<div id="footer">&copy;Muammer Şahin</div>
+	</div>
+
+</h:body>
+</html>

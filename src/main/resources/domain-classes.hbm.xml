@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping
+PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping>
+	<class name="Model.Student" table="student">
+		<id name="studentId" column="STD_ID" type="long">
+			<generator class="native" />
+		</id>
+		<property name="studentNumber" column="STD_NUMBER" type="string"/>
+		<property name="studentName" column="STD_NAME" type="string"/>
+		<property name="studentSurname" column="STD_SURNAME" type="string"/>
+		<property name="phoneNumber" column="STD_PHO" type="string"/>
+		<property name="city" column="STD_CITY" type="string"/>
+		<property name="distinct" column="STD_DISTINCT" type="string"/>
+		<property name="image" column="STD_IMG" type="blob"/>
+		
+	</class>	
+</hibernate-mapping>
