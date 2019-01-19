@@ -56,7 +56,6 @@ public class RandomStudentService implements IStudentService {
 		city = null;
 		savedStudents.add(student);
 		session.save(student);
-		session.flush();
 		logger.info("Student is saved: {}", student);
 	}
 

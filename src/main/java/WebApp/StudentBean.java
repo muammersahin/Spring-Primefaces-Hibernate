@@ -115,9 +115,12 @@ public class StudentBean implements Serializable {
 
 	public void save() throws IOException {
 
-		logger.info("new student is going to be saved: {} ", this.student);
-		this.studentService.saveStudent(student);
-		this.init();
+		if(student.getStudentName() != null && !student.getStudentName().equals("")) {
+			logger.info("new student is going to be saved: {} ", this.student);
+			this.studentService.saveStudent(student);
+			this.init();
+		}
+		
 	}
 
 	public void commit() {

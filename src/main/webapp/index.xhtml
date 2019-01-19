@@ -172,7 +172,7 @@ body {
 					</p:menu>
 					<p:commandButton value="Kaydet" action="#{studentBean.commit}"
 						style="width:175px;height:100px;"
-						update=":form:grid,:dene:veri,:form:grwl"
+						update=":form:grid,:dene:veri,:form:grwl" immediate="true"
 						oncomplete="handleLoginRequest(xhr, status, args)" />
 
 
@@ -214,11 +214,12 @@ body {
 								<f:selectItems value="#{studentBean.distincts}" />
 							</p:selectOneMenu>
 
-							<h:outputText value="Fotoğraf(jpg):" />
+							<h:outputText value="Fotoğraf(JPG - MAX: 40KB):" />
 
 							<p:fileUpload fileUploadListener="#{studentBean.upload}"
-								mode="advanced" required="true"
-								requiredMessage="Lütfen Fotoğraf Yükleyiniz.">
+								mode="advanced" skinSimple="true" required="true"
+								requiredMessage="Lütfen Fotoğraf Yükleyiniz." sizeLimit="40000"
+								allowTypes="/(\.|\/)(jpe?g)$/">
 								<f:attribute name="student" value="#{student.studentId}" />
 
 							</p:fileUpload>
@@ -226,8 +227,10 @@ body {
 							<f:facet name="footer">
 								<p:commandButton value="Kaydet" action="#{studentBean.save}"
 									update=":form:grid,:dene:veri,:form:grwl"
-									oncomplete="handleLoginRequest(xhr, status, args)" />
-								<p:commandButton value="Çıkış" onclick="kayit.hide()" immediate="true"/>
+									oncomplete="handleLoginRequest(xhr, status, args)">
+								</p:commandButton>
+								<p:commandButton value="Çıkış" onclick="kayit.hide()"
+									immediate="true" />
 							</f:facet>
 						</h:panelGrid>
 					</p:dialog>
